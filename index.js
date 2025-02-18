@@ -1,17 +1,17 @@
 import * as Carousel from "./Carousel.js";
 
-// Elements
+
 const breedSelect = document.getElementById("breedSelect");
 const infoDump = document.getElementById("infoDump");
 const progressBar = document.getElementById("progressBar");
 const getFavouritesBtn = document.getElementById("getFavouritesBtn");
 
-// API Setup
+
 const API_KEY = "live_mFsiSVx3ThUtmCuNFXjdNJfvYTmB0gdVrBUAjZ6ivAqMFNH1MLjXkQnx4wfYYpfL";
 axios.defaults.baseURL = "https://api.thecatapi.com/v1";
 axios.defaults.headers.common["x-api-key"] = API_KEY;
 
-// Axios Interceptors
+
 axios.interceptors.request.use(config => {
     console.log(`Request started: ${config.url}`);
     config.metadata = { startTime: new Date() };
@@ -31,7 +31,7 @@ axios.interceptors.response.use(response => {
     return response;
 });
 
-// Initial Load Function
+
 async function initialLoad() {
     try {
         const res = await axios.get("/breeds");
@@ -45,7 +45,7 @@ async function initialLoad() {
     }
 }
 
-// Load Breed Images Function
+
 async function loadBreedImages(breedId) {
     try {
         Carousel.clear();
@@ -76,7 +76,7 @@ async function loadBreedImages(breedId) {
     }
 }
 
-// Update Progress Bar Function
+
 function updateProgress(event) {
     if (event.lengthComputable) {
         const percentComplete = (event.loaded / event.total) * 100;
@@ -84,7 +84,7 @@ function updateProgress(event) {
     }
 }
 
-// Favorite Image Function
+
 export async function favourite(imgId) {
     try {
         const favResponse = await axios.post("/favourites", { image_id: imgId });
@@ -94,7 +94,7 @@ export async function favourite(imgId) {
     }
 }
 
-// Get Favorites Function
+
 async function getFavourites() {
     try {
         const res = await axios.get("/favourites");
@@ -111,11 +111,11 @@ async function getFavourites() {
     }
 }
 
-// Event Listeners
+
 breedSelect.addEventListener("change", (e) => {
     loadBreedImages(e.target.value);
 });
 getFavouritesBtn.addEventListener("click", getFavourites);
 
-// Initialize Application
+
 initialLoad();
